@@ -4,7 +4,7 @@ pipeline {
          stage ('running some shell command no 1') {
               steps {
                    echo "uptime of this system is"
-                   sh "uptime"
+                   uptime
               }
          }
          stage ('running some shell command no 2') {
