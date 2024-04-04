@@ -9,7 +9,7 @@ pipeline {
          }
          stage ('running some shell command no 2') {
               steps {
-                   sh "echo "current user is... ""
+                   sh "echo "current user is""
                    sh "whoami"
               }
          }
