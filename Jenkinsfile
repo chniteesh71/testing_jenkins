@@ -13,5 +13,11 @@ pipeline {
                    sh "whoami"
               }
          }
+          stage ('running some shell command no 3') {
+              steps {
+                   sh "echo 'the file system utilization in our Jenkins server(t2 medium)'"
+                   sh "df -h"
+              }
+         }
     }
 }
