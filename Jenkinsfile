@@ -1,23 +1,35 @@
 pipeline {
      agent any
+     environment {
+                    registry = 'chniteesh71/cicd-kube-docker'
+                    registryCredentials = 'dockerhub'
+     }
+      
      stages {
-         stage ('running some shell command no 1') {
-              steps {
-                   echo "uptime of this system is"
-                   sh "uptime"
+          stage ('Build Docker app image') {
+            steps {
+               script {
+                dockerImage = docker.build( registry + ":V$BUILD_NUMBER" , ".")
+               }
+
+             }
+          }
+
+        stage ('upload image to docker hub') {
+          steps {
+             script {
+                docker.withRegistry('',registryCredentials) {
+                dockerImage.push("V$BUILD_NUMBER")
+                dockerImage.push('latest')
+                }  
               }
-         }
-         stage ('running some shell command no 2') {
-              steps {
-                   sh "echo 'current user is'"
-                   sh "whoami"
-              }
-         }
-          stage ('running some shell command no 3') {
-              steps {
-                   sh "echo 'th file system utilix'"
-                   sh "whoami"
-              }
-         }
+          }
+        }
+
+        stage('remove the unused docker images') {
+          steps {
+            sh "docker rmi $registry:V$BUILD_NUMBER"
+          }
+        }
     }
 }
