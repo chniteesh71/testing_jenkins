@@ -1,15 +1,16 @@
 pipeline {
      agent any
      environment {
-                    registry = 'chniteesh71/cicd-kube-docker'
-                    registryCredentials = 'dockerhub'
+                    registryCredential = 'ecr:us-east-1:awscreds'
+                    appRegistry = '205483668172.dkr.ecr.us-east-1.amazonaws.com/vprofileimg'
+                    vprofileRegistry = "https://205483668172.dkr.ecr.us-east-1.amazonaws.com"
      }
       
      stages {
           stage ('Build Docker app image') {
             steps {
                script {
-                dockerImage = docker.build( registry + ":V$BUILD_NUMBER","./dockerfilestxt/")
+                dockerImage = docker.build( appregistry + ":V$BUILD_NUMBER","./dockerfilestxt/")
                }
 
              }
@@ -18,7 +19,7 @@ pipeline {
         stage ('upload image to docker hub') {
           steps {
              script {
-                docker.withRegistry('',registryCredentials) {
+                docker.withRegistry( vprofileRegistry, registryCredential) {
                 dockerImage.push("V$BUILD_NUMBER")
                 dockerImage.push('latest')
                 }  
@@ -28,7 +29,7 @@ pipeline {
 
         stage('remove the unused docker images') {
           steps {
-            sh "docker rmi $registry:V$BUILD_NUMBER"
+            sh "docker rmi $appregistry:V$BUILD_NUMBER"
           }
         }
     }
