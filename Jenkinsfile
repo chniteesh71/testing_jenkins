@@ -16,7 +16,7 @@ pipeline {
              }
           }
 
-        stage ('upload image to docker hub') {
+        stage ('upload image to ECR Repo in AWS') {
           steps {
              script {
                 docker.withRegistry( vprofileRegistry, registryCredential) {
@@ -27,7 +27,7 @@ pipeline {
           }
         }
 
-        stage('remove the unused docker images') {
+        stage('remove the unused docker images from Jenkins ec2 instance for space') {
           steps {
             sh "docker rmi $appregistry:V$BUILD_NUMBER"
           }
