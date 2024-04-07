@@ -9,7 +9,7 @@ pipeline {
           stage ('Build Docker app image') {
             steps {
                script {
-                dockerImage = docker.build( registry + ":V$BUILD_NUMBER","./Dockerfile")
+                dockerImage = docker.build( registry + ":V$BUILD_NUMBER","./dockerfilestxt/")
                }
 
              }
