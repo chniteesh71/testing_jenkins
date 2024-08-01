@@ -1,3 +1,4 @@
+
 pipeline {
   agent any
   environment {
@@ -19,10 +20,11 @@ pipeline {
                 docker.withRegistry('',registryCredentials) {
                 dockerImage.push("V$BUILD_NUMBER")
                 dockerImage.push('latest')
+            }
         }
       }
-    }
 
+    }
     stage('removing the unused docker images') {
         steps {
             sh "docker rmi $registry:V$BUILD_NUMBER"
