@@ -1,0 +1,5 @@
+Resources:
+ myuser:
+   Type: AWS::IAM::User
+   Properties: 
+     UserName: cloudformation-user
